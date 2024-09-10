@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorize Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ccc;
+        }
+        .header h1 {
+            color: #333;
+            font-size: 2rem;
+            margin: 0;
+        }
+        .header p {
+            color: #666;
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+        form {
+            text-align: center;
+        }
+        input[type="file"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            background-color: #4161c1;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #364bb7;
+        }
+        #preview {
+            margin-top: 20px;
+            max-width: 100%;
+            max-height: 300px;
+            display: none;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .clear-button {
+            background-color: #f44336;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .clear-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Colorize Your Image</h1>
+            <p>Upload a grayscale image, and we’ll add color to it using our AI model! Note: high-resolution images may take a little longer to process.</p>
+        </div>
+        <form action="/img_out" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required onchange="previewImage(event)">
+            <img id="preview" src="" alt="Image Preview">
+            <div class="button-container">
+                <button type="submit">Upload and Colorize</button>
+                <button type="button" class="clear-button" onclick="clearImage()">Clear Image</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const preview = document.getElementById('preview');
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                preview.src = reader.result;
+                preview.style.display = 'block'; // Show the image once it's loaded
+            };
+
+            if (file) {
+                reader.readAsDataURL(file); // Read the file as a data URL
+            } else {
+                preview.src = ''; // Clear the preview if no file is selected
+                preview.style.display = 'none'; // Hide the preview
+            }
+        }
+
+        function clearImage() {
+            // Clear the file input and the preview
+            const fileInput = document.querySelector('input[type="file"]');
+            const preview = document.getElementById('preview');
+
+            fileInput.value = ''; // Reset the file input
+            preview.src = ''; // Remove the image preview
+            preview.style.display = 'none'; // Hide the preview
+        }
+    </script>
+</body>
+</html>
